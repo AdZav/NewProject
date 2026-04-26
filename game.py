@@ -17,3 +17,30 @@ class Game:
     def run_game_loop(self):
         while self.running:
             self.clock.tick(FPS)
+            self.handle_events()
+            self._update()
+            self._draw()
+    
+    def _setup_pygame(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption(self.caption)
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+    
+    def _draw(self):
+        self.screen.fill(WHITE)
+        
+        # for col in range(self.tile_cols):
+        #     for row in range(self.tile_rows):
+        #         rect = (col * self.tile_width, row * self.tile_height, self.tile_width, self.tile_height)
+        #         pygame.display.set_caption(self.caption)
+        #         pygame.draw.rect(self.screen, BLACK, rect, 1)
+
+        pygame.display.update()
+
+    def _update(self):
+        pass
