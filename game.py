@@ -1,5 +1,6 @@
 import pygame
-from player import Player
+from player import *
+from wall import Wall
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -32,7 +33,25 @@ class Game:
             self._draw()
     
     def _init_game_objects(self):
+        self.map = []
+        for _ in range(self.tile_cols):
+            new_col = []
+            for _ in range(self.tile_rows):
+                new_col.append(0)
+            self.map.append(new_col)
+            self.map = [[0] * self.tile_rows for _ in range(self.tile_cols)]
         self.player = Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, self.tile_width, self.tile_height)
+        self.map[INITIAL_PLAYER_X][INITIAL_PLAYER_Y] = self.player
+
+        self._generate_level()
+
+    def _generate_level(self):
+        for col in range(self.tile_cols):
+            self.map[col][0] = Wall(col, 0, self.tile_width, self.tile_height)
+            self.map[col][self.tile_rows - 1] = Wall(col, self.tile_rows - 1, self.tile_width, self.tile_height)
+        for row in range(self.tile_rows):
+            self.map[0][row] = Wall(0, row, self.tile_width, self.tile_height)
+            self.map[self.tile_cols - 1][row] = Wall(self.tile_cols - 1, row, self.tile_width, self.tile_height)
 
     def _setup_pygame(self):
         pygame.init()
