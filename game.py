@@ -1,8 +1,11 @@
 import pygame
-
+from player import Player
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+
+INITIAL_PLAYER_X = 2
+INITIAL_PLAYER_Y = 5
 
 class Game:
     def __init__(self, _width, _height, _caption):
@@ -11,12 +14,15 @@ class Game:
         self.caption = _caption
         self.tile_cols = 10
         self.tile_rows = 10
-        self.tile_width = self.width // self.tile_cols
-        self.tile_height = self.height // self.tile_rows
+        self.tile_width = self.width / self.tile_cols
+        self.tile_height = self.height / self.tile_rows
 
         self.clock = pygame.time.Clock()
         self.running = True
+
+        # GAME SETUP    
         self._setup_pygame()
+        self._init_game_objects()
 
     def run_game_loop(self):
         while self.running:
@@ -25,6 +31,9 @@ class Game:
             self._update()
             self._draw()
     
+    def _init_game_objects(self):
+        self.player = Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, self.tile_width, self.tile_height)
+
     def _setup_pygame(self):
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
@@ -43,6 +52,8 @@ class Game:
                 rect = (col * self.tile_width, row * self.tile_height, self.tile_width, self.tile_height)
                 pygame.display.set_caption(self.caption)
                 pygame.draw.rect(self.screen, BLACK, rect, 1)
+
+        self.player.draw(self.screen)
 
         pygame.display.update()
 
