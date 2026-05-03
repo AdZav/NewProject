@@ -43,6 +43,8 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            if self.player:
+                moved = self.player.handle_input(event, self.tile_cols, self.tile_rows)
     
     def _draw(self):
         self.screen.fill(WHITE)
@@ -59,3 +61,4 @@ class Game:
 
     def _update(self):
         pass
+        self.player.update()
