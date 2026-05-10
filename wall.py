@@ -4,7 +4,7 @@ from gameobject import GameObject
 BLUE = (0, 0, 255)
 
 class Wall(GameObject):
-    def __init__(self, gridx, gridy, x, y, tile_width, tile_height, color):
+    def __init__(self, gridx, gridy, tile_width, tile_height, color=BLUE):
         x = gridx * tile_width
         y = gridy * tile_height
         super().__init__(gridx, gridy, x, y, tile_width, tile_height, color)
