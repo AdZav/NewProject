@@ -1,5 +1,6 @@
 import pygame
 from gameobject import GameObject
+from wall import Wall
 
 GREEN = (0, 255, 0)
 class Player(GameObject):
@@ -9,7 +10,7 @@ class Player(GameObject):
         super().__init__(gridx, gridy, x, y, tile_width, tile_height, color)
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.tile_width, self.tile_height))
-    def handle_input(self, event, tile_cols, tile_rows):
+    def handle_input(self, event, game_map, tile_cols, tile_rows):
 
         moved = False
 
@@ -28,9 +29,12 @@ class Player(GameObject):
                 
         
         if new_gridx >= -0 and new_gridx < tile_cols and new_gridy >= 0 and new_gridy < tile_rows:
-            self.gridx = new_gridx
-            self.gridy = new_gridy
-            moved = True
+            if game_map[new_gridx][new_gridy] == 0:
+                game_map[new_gridx][new_gridy] = game_map[self.gridx][self.gridy]
+                game_map[self.gridx][self.gridy] = 0
+                self.gridx = new_gridx
+                self.gridy = new_gridy
+                moved = True
 
         return moved
             
