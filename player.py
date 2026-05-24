@@ -3,11 +3,15 @@ from gameobject import GameObject
 from wall import Wall
 
 GREEN = (0, 255, 0)
+MOVE_FRAMES = 10
 class Player(GameObject):
     def __init__(self, gridx, gridy, tile_width, tile_height, color = GREEN):
         x = gridx * tile_width
         y = gridy * tile_height
         super().__init__(gridx, gridy, x, y, tile_width, tile_height, color)
+
+        self.move_speed = tile_width / MOVE_FRAMES
+        
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.tile_width, self.tile_height))
     def handle_input(self, event, game_map, tile_cols, tile_rows):
@@ -40,8 +44,17 @@ class Player(GameObject):
             
           
     def update(self):
-        pass
 
-        self.x = self.gridx * self.tile_width
-        self.y = self.gridy * self.tile_height
+        target_x = self.gridx * self.tile_width
+        target_y = self.gridy * self.tile_height
 
+        if self.x < target_x:
+            self.x = min(self.x + self.move_speed, target_x)
+        elif self.x > target_x:
+            self.x = max(self.x - self.move_speed, target_x)
+        
+        if self.y < target_y:
+            self.y = min(self.y + self.move_speed, target_y)
+        elif self.y > target_y:
+            self.y = max(self.y - self.move_speed, target_y)
+            
